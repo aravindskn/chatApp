@@ -16,12 +16,12 @@
     <button id="locationButton">Share Location</button>
     <script id="message-template" type="text/html">
       <div>
-          <p>{{message}}</p>
+          <p>{{createdAt}} - {{message}}</p>
       </div>
     </script>
     <script id="location-template" type="text/html">
       <div>
-          <p><a href={{location}} target="_blank">My Current Location</a></p>
+          <p>{{createdAt}} - <a href={{location}} target="_blank">My Current Location</a></p>
       </div>
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>

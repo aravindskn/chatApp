@@ -28,7 +28,8 @@ form.addEventListener("submit", (e) => {
 
 socket.on("Message", (msg) => {
   const html = Mustache.render(messageTemplate, {
-    message: msg,
+    message: msg.text,
+    createdAt: moment(msg.createdAt).format("hh:mm a"),
   });
   messages.insertAdjacentHTML("beforeend", html);
 });
@@ -55,7 +56,8 @@ locationButton.addEventListener("click", () => {
 socket.on("location", (location) => {
   console.log(location);
   const html = Mustache.render(locationTemplate, {
-    location,
+    location: location.url,
+    createdAt: moment(location.createdAt).format("hh:mm a"),
   });
   $location.insertAdjacentHTML("beforeend", html);
 });
