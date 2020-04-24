@@ -32,6 +32,7 @@ form.addEventListener("submit", (e) => {
 
 socket.on("Message", (msg) => {
   const html = Mustache.render(messageTemplate, {
+    username: msg.username,
     message: msg.text,
     createdAt: moment(msg.createdAt).format("hh:mm a"),
   });
@@ -60,6 +61,7 @@ locationButton.addEventListener("click", () => {
 socket.on("location", (location) => {
   console.log(location);
   const html = Mustache.render(locationTemplate, {
+    username: location.username,
     location: location.url,
     createdAt: moment(location.createdAt).format("hh:mm a"),
   });

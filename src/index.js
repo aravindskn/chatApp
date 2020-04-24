@@ -33,17 +33,21 @@ io.on("connection", (socket) => {
       return callback(error);
     }
     socket.join(user.room);
-    socket.emit("WelcomeMessage", generateMessage("Welcome!"));
+    socket.emit("WelcomeMessage", generateMessage("Admin", "Welcome!"));
     socket.broadcast
       .to(user.room)
-      .emit("Message", generateMessage(`${user.username} has joined!`));
+      .emit(
+        "Message",
+        generateMessage("Admin", `${user.username} has joined!`)
+      );
     callback();
   });
 
   socket.on("sendMessage", (msg, callback) => {
+    const user = getUser(socket.id);
     const filter = new Filter();
     if (filter.isProfane(msg)) return callback("Profanity is not Allowed!");
-    io.emit("Message", generateMessage(msg));
+    io.to(user.room).emit("Message", generateMessage(user.username, msg));
     callback();
   });
 
@@ -52,15 +56,17 @@ io.on("connection", (socket) => {
     if (user) {
       io.to(user.room).emit(
         "Message",
-        generateMessage(`${user.username} has Disconnected!`)
+        generateMessage("Admin", `${user.username} has Disconnected!`)
       );
     }
   });
 
   socket.on("sendLocation", (location, callback) => {
-    io.emit(
+    const user = getUser(socket.id);
+    io.to(user.room).emit(
       "location",
       generateLocationMessage(
+        user.username,
         "https://google.com/maps?q=" +
           location.latitude +
           "," +
