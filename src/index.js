@@ -20,8 +20,12 @@ app.get("", (req, res) => {
 io.on("connection", (socket) => {
   console.log("New WebSocket Connection");
   socket.emit("WelcomeMessage", "Welcome!");
+  socket.broadcast.emit("Message", "A New User has Joined!");
   socket.on("sendMessage", (msg) => {
-    io.emit("sendMessage", msg);
+    io.emit("Message", msg);
+  });
+  socket.on("disconnect", () => {
+    io.emit("Message", "A User has Disconnected!");
   });
 });
 

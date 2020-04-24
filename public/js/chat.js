@@ -11,6 +11,6 @@ form.addEventListener("submit", (e) => {
   socket.emit("sendMessage", msg);
 });
 
-socket.on("sendMessage", (msg) => {
+socket.on("Message", (msg) => {
   console.log(msg);
 });
