@@ -3,6 +3,9 @@ const form = document.querySelector("#chat-form");
 const locationButton = document.querySelector("#location");
 const msgInput = document.querySelector("#msgInput");
 const msgButton = document.querySelector("#msgButton");
+const messages = document.querySelector("#messages");
+
+const messageTemplate = document.querySelector("#message-template").innerHTML;
 
 socket.on("WelcomeMessage", (msg) => {
   console.log(msg);
@@ -23,6 +26,10 @@ form.addEventListener("submit", (e) => {
 
 socket.on("Message", (msg) => {
   console.log(msg);
+  const html = Mustache.render(messageTemplate, {
+    message: msg,
+  });
+  messages.insertAdjacentHTML("beforeend", html);
 });
 
 locationButton.addEventListener("click", () => {
