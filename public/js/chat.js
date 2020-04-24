@@ -19,6 +19,25 @@ socket.on("WelcomeMessage", (msg) => {
   console.log(msg);
 });
 
+const autoscroll = () => {
+  //new Message Element
+  const newMessage = messages.lastElementChild;
+  //Height of the new Message
+  const newMessageStyles = getComputedStyle(newMessage);
+  const newMessageMargin = parseInt(newMessageStyles.marginBottom);
+  const newMessageHeight = newMessage.offsetHeight + newMessageMargin;
+  //Visible height
+  const visibleHeight = messages.offsetHeight;
+  //Height of one message container
+  const containerHeight = messages.scrollHeight;
+  //How much have we scrolled
+  const scrollOffset = messages.scrollTop + visibleHeight;
+
+  if (containerHeight - newMessageHeight <= scrollOffset) {
+    messages.scrollTop = messages.scrollHeight;
+  }
+};
+
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   msgButton.setAttribute("disabled", "disabled");
@@ -28,7 +47,6 @@ form.addEventListener("submit", (e) => {
     msgInput.value = "";
     msgInput.focus();
     if (error) return console.log(error);
-    console.log("Message Delivered");
   });
 });
 
@@ -39,6 +57,7 @@ socket.on("Message", (msg) => {
     createdAt: moment(msg.createdAt).format("hh:mm a"),
   });
   messages.insertAdjacentHTML("beforeend", html);
+  autoscroll();
 });
 
 locationButton.addEventListener("click", () => {
@@ -53,7 +72,6 @@ locationButton.addEventListener("click", () => {
         longitude: position.coords.longitude,
       },
       () => {
-        console.log("Location Shared!");
         locationButton.removeAttribute("disabled");
       }
     );
@@ -61,13 +79,13 @@ locationButton.addEventListener("click", () => {
 });
 
 socket.on("location", (location) => {
-  console.log(location);
   const html = Mustache.render(locationTemplate, {
     username: location.username,
     location: location.url,
     createdAt: moment(location.createdAt).format("hh:mm a"),
   });
   $location.insertAdjacentHTML("beforeend", html);
+  autoscroll();
 });
 
 socket.on("roomData", ({ room, users }) => {
