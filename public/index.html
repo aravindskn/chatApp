@@ -7,15 +7,21 @@
     <h1>Welcome to Chat APP</h1>
 
     <div id="messages"></div>
+    <div id="location"></div>
 
     <form id="chat-form">
       <input placeholder="Enter Message" name="message" id="msgInput" />
       <button id="msgButton">Send</button>
     </form>
-    <button id="location">Share Location</button>
+    <button id="locationButton">Share Location</button>
     <script id="message-template" type="text/html">
       <div>
           <p>{{message}}</p>
+      </div>
+    </script>
+    <script id="location-template" type="text/html">
+      <div>
+          <p><a href={{location}} target="_blank">My Current Location</a></p>
       </div>
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js"></script>

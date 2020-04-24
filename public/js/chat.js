@@ -1,11 +1,13 @@
 const socket = io();
 const form = document.querySelector("#chat-form");
-const locationButton = document.querySelector("#location");
+const locationButton = document.querySelector("#locationButton");
 const msgInput = document.querySelector("#msgInput");
 const msgButton = document.querySelector("#msgButton");
 const messages = document.querySelector("#messages");
+const $location = document.querySelector("#location");
 
 const messageTemplate = document.querySelector("#message-template").innerHTML;
+const locationTemplate = document.querySelector("#location-template").innerHTML;
 
 socket.on("WelcomeMessage", (msg) => {
   console.log(msg);
@@ -25,7 +27,6 @@ form.addEventListener("submit", (e) => {
 });
 
 socket.on("Message", (msg) => {
-  console.log(msg);
   const html = Mustache.render(messageTemplate, {
     message: msg,
   });
@@ -53,4 +54,8 @@ locationButton.addEventListener("click", () => {
 
 socket.on("location", (location) => {
   console.log(location);
+  const html = Mustache.render(locationTemplate, {
+    location,
+  });
+  $location.insertAdjacentHTML("beforeend", html);
 });
