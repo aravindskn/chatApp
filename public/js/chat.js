@@ -9,6 +9,10 @@ const $location = document.querySelector("#location");
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const locationTemplate = document.querySelector("#location-template").innerHTML;
 
+const { username, room } = Qs.parse(location.search, {
+  ignoreQueryPrefix: true,
+});
+
 socket.on("WelcomeMessage", (msg) => {
   console.log(msg);
 });
@@ -61,3 +65,5 @@ socket.on("location", (location) => {
   });
   $location.insertAdjacentHTML("beforeend", html);
 });
+
+socket.emit("join", { username, room });
