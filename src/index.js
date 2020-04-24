@@ -27,6 +27,15 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     io.emit("Message", "A User has Disconnected!");
   });
+  socket.on("sendLocation", (location) => {
+    io.emit(
+      "location",
+      "https://google.com/maps?q=" +
+        location.latitude +
+        "," +
+        location.longitude
+    );
+  });
 });
 
 server.listen(PORT, () => console.log("Server running on PORT:", PORT));
