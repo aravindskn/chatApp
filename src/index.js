@@ -17,8 +17,12 @@ app.get("", (req, res) => {
   res.render("index");
 });
 
-io.on("connection", () => {
+io.on("connection", (socket) => {
   console.log("New WebSocket Connection");
+  socket.emit("WelcomeMessage", "Welcome!");
+  socket.on("sendMessage", (msg) => {
+    io.emit("sendMessage", msg);
+  });
 });
 
 server.listen(PORT, () => console.log("Server running on PORT:", PORT));
