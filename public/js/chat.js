@@ -5,9 +5,11 @@ const msgInput = document.querySelector("#msgInput");
 const msgButton = document.querySelector("#msgButton");
 const messages = document.querySelector("#messages");
 const $location = document.querySelector("#location");
+const sidebarDiv = document.querySelector("#sidebar");
 
 const messageTemplate = document.querySelector("#message-template").innerHTML;
 const locationTemplate = document.querySelector("#location-template").innerHTML;
+const sidebarTemplate = document.querySelector("#sidebar-template").innerHTML;
 
 const { username, room } = Qs.parse(location.search, {
   ignoreQueryPrefix: true,
@@ -66,6 +68,14 @@ socket.on("location", (location) => {
     createdAt: moment(location.createdAt).format("hh:mm a"),
   });
   $location.insertAdjacentHTML("beforeend", html);
+});
+
+socket.on("roomData", ({ room, users }) => {
+  const html = Mustache.render(sidebarTemplate, {
+    room,
+    users,
+  });
+  sidebarDiv.innerHTML = html;
 });
 
 socket.emit("join", { username, room }, (error) => {
