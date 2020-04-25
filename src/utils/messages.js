@@ -1,4 +1,6 @@
+//This script handles messages to and from server to client
 const generateMessage = (username, text) => {
+  //Chat Message
   return {
     username,
     text,
@@ -7,6 +9,7 @@ const generateMessage = (username, text) => {
 };
 
 const generateLocationMessage = (username, url) => {
+  //Location Message
   return {
     username,
     url,
